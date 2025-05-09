@@ -1,0 +1,136 @@
+🖼️ Image Classification with Hugging Face Transformers
+This project demonstrates how to fine-tune state-of-the-art image classification models (like ViT, ResNet, ConvNeXT, and Swin Transformer) using the Hugging Face 🤗 Transformers library and PyTorch. It supports training with both the Trainer API and a custom training loop using Accelerate.
+
+📂 Project Structure
+bash
+Copy
+Edit
+.
+├── run_image_classification.py              # Training script using Hugging Face Trainer
+├── run_image_classification_no_trainer.py  # Training script using custom loop with Accelerate
+├── requirements.txt                         # Python dependencies
+└── README.md                                # Project documentation
+🚀 Features
+✅ Fine-tune any Hugging Face image classification model
+
+📥 Supports Hugging Face datasets or custom local datasets
+
+🏗️ Trainer-based and Trainer-free options
+
+📊 Automatic logging and accuracy evaluation
+
+☁️ Easy model upload to Hugging Face Hub
+
+🧰 Requirements
+Install dependencies:
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Requirements include:
+
+torch
+
+torchvision
+
+transformers
+
+datasets
+
+evaluate
+
+accelerate
+
+📁 Dataset Format
+You can use:
+
+Hugging Face datasets (--dataset_name beans, --dataset_name cifar10, etc.)
+
+Custom image datasets arranged as:
+
+Copy
+Edit
+your_dataset/
+├── class1/
+│   ├── img1.jpg
+│   └── ...
+├── class2/
+│   ├── img1.jpg
+│   └── ...
+💻 Usage
+⚙️ With Trainer (run_image_classification.py)
+Train using a public dataset:
+
+bash
+Copy
+Edit
+python run_image_classification.py \
+  --dataset_name beans \
+  --output_dir ./output \
+  --do_train \
+  --do_eval \
+  --remove_unused_columns False \
+  --per_device_train_batch_size 8 \
+  --per_device_eval_batch_size 8 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 5 \
+  --logging_strategy steps \
+  --eval_strategy epoch \
+  --save_strategy epoch \
+  --load_best_model_at_end True
+Train using a custom dataset:
+
+bash
+Copy
+Edit
+python run_image_classification.py \
+  --train_dir ./your_dataset/train \
+  --validation_dir ./your_dataset/val \
+  --output_dir ./output \
+  --do_train \
+  --do_eval \
+  --remove_unused_columns False
+⚙️ With Accelerate (run_image_classification_no_trainer.py)
+bash
+Copy
+Edit
+accelerate config  # First-time setup
+accelerate launch run_image_classification_no_trainer.py \
+  --dataset_name cifar10 \
+  --output_dir ./output \
+  --num_train_epochs 3 \
+  --per_device_train_batch_size 8 \
+  --per_device_eval_batch_size 8
+To use your own dataset, replace --dataset_name with --train_dir and --validation_dir.
+
+📊 Evaluation
+The project uses the evaluate library to calculate accuracy automatically during training and evaluation phases.
+
+☁️ Push to Hugging Face Hub
+Authenticate:
+
+bash
+Copy
+Edit
+huggingface-cli login
+Add these arguments:
+
+bash
+Copy
+Edit
+--push_to_hub \
+--push_to_hub_model_id your-model-name
+🧠 Models Supported
+Any model supported by AutoModelForImageClassification, such as:
+
+ViT (Vision Transformer)
+
+ConvNeXT
+
+ResNet
+
+Swin Transformer
+
+📝 License
+This project is licensed under the Apache 2.0 License
